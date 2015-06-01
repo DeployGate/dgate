@@ -37,6 +37,13 @@ Let's upload the app to DeployGate!`
 	println(welcomeMessage)
 }
 
+func DoLogout() {
+	name, _ := getSessions()
+	settings := `{"name":"` + name + `","token":""}`
+	writeSettingFile(settings)
+	println("Logout Success")
+}
+
 func IsLogin() bool {
 	name, token := getSessions()
 	return name != "" && token != ""

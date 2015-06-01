@@ -71,7 +71,7 @@ func main() {
 			Name:  "logout",
 			Usage: "logout to deploygate",
 			Action: func(c *cli.Context) {
-				println("logout")
+				DoLogout()
 			},
 		},
 	}
