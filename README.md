@@ -10,9 +10,18 @@ $ go get github.com/DeployGate/dgate
 
 ## Usage
 
+### Login
+
+```
+$ dgate login --email your@email.com --password your_password
+```
+
+### Push
 Push/Update an application:
 
-    $ dgate push [package file path]
+```
+$ dgate push [package file path]
+```
 
 See https://deploygate.com/docs/cli for more information.
 
