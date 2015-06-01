@@ -1,1 +1,4 @@
 gom 'github.com/codegangsta/cli'
+gom 'github.com/ddliu/go-httpclient'
+gom 'github.com/jmoiron/jsonq'
+gom 'github.com/howeyc/gopass'

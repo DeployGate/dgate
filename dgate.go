@@ -1,8 +1,10 @@
 package main
 
 import (
-	"os"
+	"bufio"
 	"github.com/codegangsta/cli"
+	"github.com/howeyc/gopass"
+	"os"
 )
 
 func main() {
@@ -33,12 +35,12 @@ func main() {
 
 	app.Commands = []cli.Command{
 		{
-			Name:      "push",
-			Aliases:     []string{"p"},
-			Usage:     "push apps to deploygate",
-			Flags:       []cli.Flag{paramOwner, paramMessage},
+			Name:    "push",
+			Aliases: []string{"p"},
+			Usage:   "push apps to deploygate",
+			Flags:   []cli.Flag{paramOwner, paramMessage},
 			Action: func(c *cli.Context) {
-				owner   := c.String("owner")
+				owner := c.String("owner")
 				message := c.String("message")
 
 				println("push file path:", c.Args().First())
@@ -51,18 +53,23 @@ func main() {
 			},
 		},
 		{
-			Name:      "login",
-			Usage:     "login to deploygate",
-			Flags:       []cli.Flag{paramEmail, paramPassword},
+			Name:  "login",
+			Usage: "login to deploygate",
+			Flags: []cli.Flag{paramEmail, paramPassword},
 			Action: func(c *cli.Context) {
 				email := c.String("email")
 				password := c.String("password")
-				println("login", "email:", email, "password:", password)
+
+				if email == "" || password == "" {
+					email, password = scanEmailAndPassword()
+				}
+
+				DoLogin(email, password)
 			},
 		},
 		{
-			Name:      "logout",
-			Usage:     "logout to deploygate",
+			Name:  "logout",
+			Usage: "logout to deploygate",
 			Action: func(c *cli.Context) {
 				println("logout")
 			},
@@ -70,4 +77,16 @@ func main() {
 	}
 
 	app.Run(os.Args)
+}
+
+func scanEmailAndPassword() (string, string) {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	print("Email: ")
+	scanner.Scan()
+	email := scanner.Text()
+
+	print("Password: ")
+	pass := gopass.GetPasswd()
+	return email, string(pass)
 }
