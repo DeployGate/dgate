@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"github.com/ddliu/go-httpclient"
+	"github.com/howeyc/gopass"
 	"github.com/jmoiron/jsonq"
 	"io/ioutil"
 	"log"
@@ -10,31 +12,82 @@ import (
 	"strings"
 )
 
-const baseApiEndPoint = "https://deploygate.com/"
+const baseApiEndPoint = "https://deploygate.com"
 
-func Login(email string, password string) {
+type App struct {
+	name        string
+	owner       string
+	packageName string
+	revision    int
+	url         string
+}
+
+func Upload(filePath string, owner string, message string) (bool, App) {
+	if !isLogin() {
+		result := Login("", "")
+		if !result {
+			return false, App{}
+		}
+	}
+
+	uploadData := map[string]string{
+		"@file":   filePath,
+		"message": message,
+	}
+
+	name, _ := getSessions()
+	userName := name
+	if owner != "" {
+		userName = owner
+	}
+
+	json := postRequest("/api/users/"+userName+"/apps", uploadData)
+	error, message := checkError(json)
+	if error {
+		println(message)
+		return false, App{}
+	}
+
+	appName, _ := json.String("results", "name")
+	packageName, _ := json.String("results", "package_name")
+	path, _ := json.String("results", "path")
+	ownerName, _ := json.String("results", "user", "name")
+	revision, _ := json.Int("results", "revision")
+
+	app := App{
+		name:        appName,
+		packageName: packageName,
+		url:         baseApiEndPoint + path,
+		owner:       ownerName,
+		revision:    revision,
+	}
+	return true, app
+}
+
+func Login(email string, password string) bool {
+	if email == "" || password == "" {
+		email, password = scanEmailAndPassword()
+	}
+
 	loginData := map[string]string{
 		"email":    email,
 		"password": password,
 	}
-	json := postRequest("api/sessions", loginData)
+	json := postRequest("/api/sessions", loginData)
 
 	error, message := checkError(json)
 	if error {
 		println(message)
-		return
+		return false
 	}
 
-	name := getResultsJsonStringValue(json, "name")
-	token := getResultsJsonStringValue(json, "api_token")
+	name, _ := json.String("results", "name")
+	token, _ := json.String("results", "api_token")
 
 	settings := `{"name":"` + name + `","token":"` + token + `"}`
 	writeSettingFile(settings)
 
-	welcomeMessage := `Welcome to DeployGate!
-Let's upload the app to DeployGate!`
-
-	println(welcomeMessage)
+	return true
 }
 
 func Logout() {
@@ -44,14 +97,26 @@ func Logout() {
 	println("Logout Success")
 }
 
-func IsLogin() bool {
-	name, token := getSessions()
-	return name != "" && token != ""
-}
-
 /******************
   private methods
 *******************/
+
+func scanEmailAndPassword() (string, string) {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	print("Email: ")
+	scanner.Scan()
+	email := scanner.Text()
+
+	print("Password: ")
+	pass := gopass.GetPasswd()
+	return email, string(pass)
+}
+
+func isLogin() bool {
+	name, token := getSessions()
+	return name != "" && token != ""
+}
 
 func checkError(json *jsonq.JsonQuery) (bool, string) {
 	error, _ := json.Bool("error")
@@ -61,15 +126,6 @@ func checkError(json *jsonq.JsonQuery) (bool, string) {
 		message, _ = json.String("message")
 	}
 	return error, message
-}
-
-func getResultsJsonStringValue(json *jsonq.JsonQuery, key string) string {
-	value, err := json.String("results", key)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return value
 }
 
 func getSessions() (string, string) {

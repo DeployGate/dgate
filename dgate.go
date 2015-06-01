@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bufio"
 	"github.com/codegangsta/cli"
-	"github.com/howeyc/gopass"
 	"os"
 )
 
@@ -40,17 +38,18 @@ func main() {
 			Usage:   "push apps to deploygate",
 			Flags:   []cli.Flag{paramOwner, paramMessage},
 			Action: func(c *cli.Context) {
+				filePath := c.Args().First()
 				owner := c.String("owner")
 				message := c.String("message")
-				filePath := c.Args().First()
 
-
-				println("push file path:", c.Args().First())
-				if len(owner) > 0 {
-					println("owner:", owner)
-				}
-				if len(message) > 0 {
-					println("message:", message)
+				result, App := Upload(filePath, owner, message)
+				if result {
+					println("Push app file successful!")
+					println("Name :    ", App.name)
+					println("Owner :   ", App.owner)
+					println("Package : ", App.packageName)
+					println("Revision :", App.revision)
+					println("URL :     ", App.url)
 				}
 			},
 		},
@@ -62,11 +61,12 @@ func main() {
 				email := c.String("email")
 				password := c.String("password")
 
-				if email == "" || password == "" {
-					email, password = scanEmailAndPassword()
+				result := Login(email, password)
+				if result {
+					welcomeMessage := `Welcome to DeployGate!
+Let's upload the app to DeployGate!`
+					println(welcomeMessage)
 				}
-
-				Login(email, password)
 			},
 		},
 		{
@@ -79,16 +79,4 @@ func main() {
 	}
 
 	app.Run(os.Args)
-}
-
-func scanEmailAndPassword() (string, string) {
-	scanner := bufio.NewScanner(os.Stdin)
-
-	print("Email: ")
-	scanner.Scan()
-	email := scanner.Text()
-
-	print("Password: ")
-	pass := gopass.GetPasswd()
-	return email, string(pass)
 }
