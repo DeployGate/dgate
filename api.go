@@ -12,7 +12,7 @@ import (
 
 const baseApiEndPoint = "https://deploygate.com/"
 
-func DoLogin(email string, password string) {
+func Login(email string, password string) {
 	loginData := map[string]string{
 		"email":    email,
 		"password": password,
@@ -37,7 +37,7 @@ Let's upload the app to DeployGate!`
 	println(welcomeMessage)
 }
 
-func DoLogout() {
+func Logout() {
 	name, _ := getSessions()
 	settings := `{"name":"` + name + `","token":""}`
 	writeSettingFile(settings)

@@ -42,6 +42,8 @@ func main() {
 			Action: func(c *cli.Context) {
 				owner := c.String("owner")
 				message := c.String("message")
+				filePath := c.Args().First()
+
 
 				println("push file path:", c.Args().First())
 				if len(owner) > 0 {
@@ -64,14 +66,14 @@ func main() {
 					email, password = scanEmailAndPassword()
 				}
 
-				DoLogin(email, password)
+				Login(email, password)
 			},
 		},
 		{
 			Name:  "logout",
 			Usage: "logout to deploygate",
 			Action: func(c *cli.Context) {
-				DoLogout()
+				Logout()
 			},
 		},
 	}
