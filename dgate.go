@@ -38,19 +38,7 @@ func main() {
 			Usage:   "push apps to deploygate",
 			Flags:   []cli.Flag{paramOwner, paramMessage},
 			Action: func(c *cli.Context) {
-				filePath := c.Args().First()
-				owner := c.String("owner")
-				message := c.String("message")
-
-				result, App := Upload(filePath, owner, message)
-				if result {
-					println("Push app file successful!")
-					println("Name :    ", App.name)
-					println("Owner :   ", App.owner)
-					println("Package : ", App.packageName)
-					println("Revision :", App.revision)
-					println("URL :     ", App.url)
-				}
+				PushAction(c)
 			},
 		},
 		{
@@ -58,22 +46,14 @@ func main() {
 			Usage: "login to deploygate",
 			Flags: []cli.Flag{paramEmail, paramPassword},
 			Action: func(c *cli.Context) {
-				email := c.String("email")
-				password := c.String("password")
-
-				result := Login(email, password)
-				if result {
-					welcomeMessage := `Welcome to DeployGate!
-Let's upload the app to DeployGate!`
-					println(welcomeMessage)
-				}
+				LoginAction(c)
 			},
 		},
 		{
 			Name:  "logout",
 			Usage: "logout to deploygate",
 			Action: func(c *cli.Context) {
-				Logout()
+				LogoutAction(c)
 			},
 		},
 	}
