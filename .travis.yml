@@ -9,8 +9,7 @@ before_install:
   - go get github.com/tcnksm/ghr
 script:
   - gox -output "bin/{{.OS}}_{{.Arch}}_{{.Dir}}"
-after_success:
-  - grep Version version.go | cut -c 24- | ghr --u DeployGate -r dgate --token $GITHUB_TOKEN --replace bin/
+  - grep Version version.go | cut -c 24- | ghr -u DeployGate -r dgate --token $GITHUB_TOKEN --replace bin/
 branches:
   only:
     - master
