@@ -206,8 +206,9 @@ func postRequest(path string, params map[string]string) *jsonq.JsonQuery {
 }
 
 func setUpClient(apiToken string) {
+	userAgent := "dgate/" + Version()
 	httpclient.Defaults(httpclient.Map{
-		httpclient.OPT_USERAGENT: "dgate/golang", // TODO: Versionを取得するようにする
+		httpclient.OPT_USERAGENT: userAgent,
 		"AUTHORIZATION":          apiToken,
 	})
 }

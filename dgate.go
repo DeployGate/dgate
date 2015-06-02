@@ -9,6 +9,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "dgate"
 	app.Usage = "A command-line interface for DeployGate"
+	app.Version = Version()
 
 	paramOwner := cli.StringFlag{
 		Name:  "owner, o",
