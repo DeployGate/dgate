@@ -22,8 +22,13 @@ func LogoutAction(context *cli.Context) {
 }
 
 func PushAction(context *cli.Context) {
-	filePath := context.Args().First()
-	userName := context.String("user")
+	filePath, userName := "", ""
+	if len(context.Args()) >= 2 {
+		userName = context.Args().Get(0)
+		filePath = context.Args().Get(1)
+	} else {
+		filePath = context.Args().First()
+	}
 	message := context.String("message")
 	isOpen := context.Bool("open")
 

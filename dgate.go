@@ -11,11 +11,6 @@ func main() {
 	app.Usage = "A command-line interface for DeployGate"
 	app.Version = Version()
 
-	paramUser := cli.StringFlag{
-		Name:  "u, user",
-		Value: "",
-		Usage: "app upload user name",
-	}
 	paramMessage := cli.StringFlag{
 		Name:  "message, m",
 		Value: "",
@@ -41,7 +36,7 @@ func main() {
 			Name:    "push",
 			Aliases: []string{"p"},
 			Usage:   "push apps to deploygate",
-			Flags:   []cli.Flag{paramUser, paramMessage, paramOpen},
+			Flags:   []cli.Flag{paramMessage, paramOpen},
 			Action: func(c *cli.Context) {
 				PushAction(c)
 			},
