@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 )
 
 const baseApiEndPoint = "https://deploygate.com"
@@ -29,6 +30,17 @@ func Upload(filePath string, owner string, message string) (bool, App) {
 			return false, App{}
 		}
 	}
+
+	// progress
+	print("upload start: ")
+	ticker := time.NewTicker(time.Second)
+	go func() {
+		for _ = range ticker.C {
+			print(">>")
+		}
+	}()
+	defer println("")
+	defer ticker.Stop()
 
 	uploadData := map[string]string{
 		"@file":   filePath,
