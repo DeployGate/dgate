@@ -23,7 +23,7 @@ type App struct {
 	url         string
 }
 
-func Upload(filePath string, owner string, message string) (bool, App) {
+func Upload(filePath string, userName string, message string) (bool, App) {
 	if !isLogin() {
 		result := Login("", "")
 		if !result {
@@ -48,12 +48,11 @@ func Upload(filePath string, owner string, message string) (bool, App) {
 	}
 
 	name, _ := getSessions()
-	userName := name
-	if owner != "" {
-		userName = owner
+	if userName != "" {
+		name = userName
 	}
 
-	json := postRequest("/api/users/"+userName+"/apps", uploadData)
+	json := postRequest("/api/users/"+name+"/apps", uploadData)
 	error, message := checkError(json)
 	if error {
 		println(message)

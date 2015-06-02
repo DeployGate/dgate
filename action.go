@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/codegangsta/cli"
+	"github.com/skratchdot/open-golang/open"
 )
 
 func LoginAction(context *cli.Context) {
@@ -22,10 +23,11 @@ func LogoutAction(context *cli.Context) {
 
 func PushAction(context *cli.Context) {
 	filePath := context.Args().First()
-	owner := context.String("owner")
+	userName := context.String("user")
 	message := context.String("message")
+	isOpen := context.Bool("open")
 
-	result, App := Upload(filePath, owner, message)
+	result, App := Upload(filePath, userName, message)
 	if result {
 		println("Push app file successful!")
 		println("Name :    ", App.name)
@@ -33,5 +35,9 @@ func PushAction(context *cli.Context) {
 		println("Package : ", App.packageName)
 		println("Revision :", App.revision)
 		println("URL :     ", App.url)
+	}
+
+	if isOpen {
+		open.Run(App.url)
 	}
 }
