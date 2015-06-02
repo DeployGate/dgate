@@ -36,13 +36,17 @@ func main() {
 		Name:  "disable-notify",
 		Usage: "disable notify via email (iOS app only)",
 	}
+	paramPublic := cli.BoolFlag{
+		Name:  "public",
+		Usage: "set public visibility(new app upload only)",
+	}
 
 	app.Commands = []cli.Command{
 		{
 			Name:    "push",
 			Aliases: []string{"p"},
 			Usage:   "push apps to deploygate",
-			Flags:   []cli.Flag{paramMessage, paramOpen, paramDisableNotify},
+			Flags:   []cli.Flag{paramMessage, paramOpen, paramDisableNotify, paramPublic},
 			Action: func(c *cli.Context) {
 				PushAction(c)
 			},

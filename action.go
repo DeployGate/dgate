@@ -32,8 +32,9 @@ func PushAction(context *cli.Context) {
 	message := context.String("message")
 	isOpen := context.Bool("open")
 	isDisableNotify := context.Bool("disable-notify")
+	isPublic := context.Bool("public")
 
-	result, App := Upload(filePath, userName, message, isDisableNotify)
+	result, App := Upload(filePath, userName, message, isDisableNotify, isPublic)
 	if result {
 		println("Push app file successful!")
 		println("Name :    ", App.name)

@@ -23,7 +23,7 @@ type App struct {
 	url         string
 }
 
-func Upload(filePath string, userName string, message string, isDisableNotify bool) (bool, App) {
+func Upload(filePath string, userName string, message string, isDisableNotify bool, isPublic bool) (bool, App) {
 	if !isLogin() {
 		result := Login("", "")
 		if !result {
@@ -42,21 +42,12 @@ func Upload(filePath string, userName string, message string, isDisableNotify bo
 	defer println("")
 	defer ticker.Stop()
 
-	disableNotify := "no"
-	if isDisableNotify {
-		disableNotify = "yes"
-	}
-	uploadData := map[string]string{
-		"@file":   filePath,
-		"message": message,
-		"disable_notify": disableNotify,
-	}
-
 	name, _ := getSessions()
 	if userName != "" {
 		name = userName
 	}
 
+	uploadData := setUploadParams(filePath, message, isDisableNotify, isPublic)
 	json := postRequest("/api/users/"+name+"/apps", uploadData)
 	error, message := checkError(json)
 	if error {
@@ -116,6 +107,23 @@ func Logout() {
 /******************
   private methods
 *******************/
+
+func setUploadParams(filePath string, message string, isDisableNotify bool, isPublic bool) map[string]string {
+	visibility := "private"
+	if isPublic {
+		visibility = "public"
+	}
+	disableNotify := "no"
+	if isDisableNotify {
+		disableNotify = "yes"
+	}
+	return map[string]string{
+		"@file":   filePath,
+		"message": message,
+		"disable_notify": disableNotify,
+		"visibility": visibility,
+	}
+}
 
 func scanEmailAndPassword() (string, string) {
 	scanner := bufio.NewScanner(os.Stdin)
