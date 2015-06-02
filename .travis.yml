@@ -1,0 +1,17 @@
+language: go
+go:
+  - 1.4
+env:
+  secure: "Qi8dc/Av+GwRXXXoi8BcFj8Tot3QWiBZIO2ui6VRyacg5qGq+TD6hiF5+ed48fcpUZr9GwsdWN3qooj9k6fHJ4dHF0oZTseJ5WKUGUAqBwLqhuZWiYUCQdHcPx08pGJRwaTllfwFRDOp5g2DlI1D4n69FOgXU+jBP3FeuI8vPiE="
+before_install:
+  - go get github.com/mitchellh/gox
+  - gox -build-toolchain
+  - go get github.com/tcnksm/ghr
+script:
+  - gox -output "bin/{{.OS}}_{{.Arch}}_{{.Dir}}"
+after_success:
+  - grep Version version.go | cut -c 24- | ghr --u DeployGate -r dgate --token $GITHUB_TOKEN --replace bin/
+branches:
+  only:
+    - master
+    - feature/go
