@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	initHelp()
+
 	app := cli.NewApp()
 	app.Name = "dgate"
 	app.Usage = "A command-line interface for DeployGate"
@@ -59,4 +61,41 @@ func main() {
 	}
 
 	app.Run(os.Args)
+}
+
+func initHelp() {
+	cli.AppHelpTemplate = `NAME:
+   {{.Name}} - {{.Usage}}
+
+USAGE:
+   {{.Name}} {{if .Flags}}[global options] {{end}}command{{if .Flags}} [command options]{{end}} [arguments...]
+
+VERSION:
+   {{.Version}}{{if len .Authors}}
+
+AUTHOR(S):
+   {{range .Authors}}{{ . }}{{end}}{{end}}
+
+COMMANDS:
+   {{range .Commands}}{{join .Names ", "}}{{ "\t" }}{{.Usage}}
+   {{end}}{{if .Flags}}
+GLOBAL OPTIONS:
+   {{range .Flags}}{{.}}
+   {{end}}{{end}}
+EXAMPLE:
+    login to deploygate
+    $ dgate login -e <your email> -p <your password>
+
+    Push/Update app to your own
+    $ dgate push <app_file_path>
+
+    Push/Update app to inviter who invited your as developer
+    $ dgate push <owner_name> <app_file_path>
+
+    Push/Update app to group with message and open it in browser after push
+    $ dgate push <group_name> <app_file_path> -m 'develop build' -o
+
+    Change account or logout
+    $ dgate logout
+`
 }
