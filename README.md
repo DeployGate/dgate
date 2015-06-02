@@ -25,6 +25,22 @@ $ dgate push [package file path] --message release_message
 
 See https://deploygate.com/docs/cli for more information.
 
+## Development
+
+### Setup
+
+```
+$ go get github.com/mattn/gom
+$ gom install
+```
+
+### run & build
+
+```
+$ gom run *.go
+$ gom build
+```
+
 ## License
 
 Copyright (C) 2015 DeployGate All rights reserved.
