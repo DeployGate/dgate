@@ -23,7 +23,7 @@ type App struct {
 	url         string
 }
 
-func Upload(filePath string, userName string, message string) (bool, App) {
+func Upload(filePath string, userName string, message string, isDisableNotify bool) (bool, App) {
 	if !isLogin() {
 		result := Login("", "")
 		if !result {
@@ -42,9 +42,14 @@ func Upload(filePath string, userName string, message string) (bool, App) {
 	defer println("")
 	defer ticker.Stop()
 
+	disableNotify := "no"
+	if isDisableNotify {
+		disableNotify = "yes"
+	}
 	uploadData := map[string]string{
 		"@file":   filePath,
 		"message": message,
+		"disable_notify": disableNotify,
 	}
 
 	name, _ := getSessions()
