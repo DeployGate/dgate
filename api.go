@@ -218,7 +218,7 @@ func postRequest(path string, params map[string]string) *jsonq.JsonQuery {
 }
 
 func setUpClient(apiToken string) {
-	userAgent := "dgate/" + Version()
+	userAgent := "dgate/" + Version
 	httpclient.Defaults(httpclient.Map{
 		httpclient.OPT_USERAGENT: userAgent,
 		"AUTHORIZATION":          apiToken,

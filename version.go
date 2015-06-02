@@ -1,5 +1,3 @@
 package main
 
-func Version() string {
-	return "1.1.0"
-}
+const Version string = "1.1.0"

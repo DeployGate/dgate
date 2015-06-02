@@ -11,7 +11,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "dgate"
 	app.Usage = "A command-line interface for DeployGate"
-	app.Version = Version()
+	app.Version = Version
 
 	paramMessage := cli.StringFlag{
 		Name:  "message, m",
