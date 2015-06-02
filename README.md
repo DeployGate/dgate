@@ -30,15 +30,14 @@ See https://deploygate.com/docs/cli for more information.
 ### Setup
 
 ```
-$ go get github.com/mattn/gom
-$ gom install
+$ go get ./...
 ```
 
 ### run & build
 
 ```
-$ gom run *.go
-$ gom build
+$ go run *.go
+$ go build
 ```
 
 ## License
