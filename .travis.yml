@@ -1,0 +1,13 @@
+language: go
+
+go:
+  - 1.4
+env:
+  secure: "Qi8dc/Av+GwRXXXoi8BcFj8Tot3QWiBZIO2ui6VRyacg5qGq+TD6hiF5+ed48fcpUZr9GwsdWN3qooj9k6fHJ4dHF0oZTseJ5WKUGUAqBwLqhuZWiYUCQdHcPx08pGJRwaTllfwFRDOp5g2DlI1D4n69FOgXU+jBP3FeuI8vPiE="
+before_install:
+  - go get github.com/mitchellh/gox
+  - gox -build-toolchain
+  - go get github.com/tcnksm/ghr
+script:
+  - ./release.sh
+

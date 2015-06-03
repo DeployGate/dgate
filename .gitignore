@@ -15,3 +15,9 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+
+.idea/
+*.iml
+_vendor
+dgate
+bin/
