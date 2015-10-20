@@ -26,9 +26,13 @@ POST_INSTALL_MESSAGE
 
   spec.add_dependency 'json', '~> 1.8.2'
   spec.add_dependency 'httpclient', '~> 2.2.5'
+  spec.add_dependency 'commander', '~> 4.3.5'
+  spec.add_dependency 'color_echo', '~> 2.0.1'
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec", "~> 3.3.0"
+  spec.add_development_dependency "webmock", "~> 1.21.0"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
