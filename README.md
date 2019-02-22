@@ -1,5 +1,7 @@
 # dgate
 
+# THIS PROJECT IS NOT LONGER MAINTAINED. PLEASE USE [dg](https://github.com/DeployGate/deploygate-cli) INSTEAD.
+
 A command-line interface for DeployGate
 
 ## Installation
